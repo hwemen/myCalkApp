@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .calculator {
+            background: linear-gradient(145deg, #ffffff, #e6e6e6);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .display {
+            width: 100%;
+            height: 50px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #f9f9f9;
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        .process {
+            width: 100%;
+            height: 20px;
+            margin-bottom: 5px;
+            font-size: 1em;
+            text-align: right;
+            padding: 5px;
+            color: #666;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr) auto;
+            gap: 10px;
+        }
+        .button {
+            height: 60px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: linear-gradient(145deg, #007BFF, #0056b3);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .button.clear {
+            background: linear-gradient(145deg, #dc3545, #a71d2a);
+        }
+        .button.equals {
+            background: linear-gradient(145deg, #28a745, #1e7e34);
+            grid-column: span 2;
+        }
+        .night-mode {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(145deg, #f9f9f9, #e6e6e6);
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .night-mode::before {
+            content: '\1F319'; /* Unicode for crescent moon */
+            font-size: 1.5em;
+            color: #555;
+        }
+        body.night {
+            background-color: #222;
+            color: #ddd;
+        }
+        body.night .calculator {
+            background: linear-gradient(145deg, #333, #444);
+        }
+        body.night .display {
+            background: #555;
+            color: #ddd;
+        }
+        body.night .button {
+            background: linear-gradient(145deg, #444, #555);
+            color: #ddd;
+        }
+        body.night .button.clear {
+            background: linear-gradient(145deg, #842029, #a71d2a);
+        }
+        body.night .button.equals {
+            background: linear-gradient(145deg, #1a7f34, #28a745);
+        }
+        body.night .night-mode::before {
+            color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="process" id="process"></div>
+        <input type="text" class="display" id="display" disabled>
+        <div class="buttons">
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button" onclick="appendOperator('+')">&#43;</button>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            <button class="button" onclick="appendOperator('-')">&#8722;</button>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            <button class="button" onclick="appendNumber('3')">3</button>
+            <button class="button" onclick="appendOperator('*')">&#215;</button>
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendNumber('.')">.</button>
+            <button class="button" onclick="appendOperator('/')">&#247;</button>
+            <button class="button" onclick="appendOperator('(')">(</button>
+            <button class="button" onclick="appendOperator(')')">)</button>
+            <button class="button equals" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+    <div class="night-mode" onclick="toggleNightMode()"></div>
+
+    <script>
+        const display = document.getElementById('display');
+        const process = document.getElementById('process');
+
+        function appendNumber(number) {
+            display.value += number;
+        }
+
+        function appendOperator(operator) {
+            display.value += operator;
+        }
+
+        function clearDisplay() {
+            display.value = '';
+            process.textContent = '';
+        }
+
+        function calculateResult() {
+            try {
+                const result = eval(display.value);
+                process.textContent = display.value + ' =';
+                display.value = result;
+            } catch (e) {
+                alert('Invalid Expression');
+                clearDisplay();
+            }
+        }
+
+        function toggleNightMode() {
+            document.body.classList.toggle('night');
+        }
+    </script>
+</body>
+</html>
